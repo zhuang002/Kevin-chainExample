@@ -191,17 +191,42 @@ public class ChainList<T> implements List {
 
     @Override
     public Object remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (index<0 || index>this.size()-1) return null;
+        Node current=this.head;
+        for (int i=0;i<index-1;i++) {
+            current=current.getNext();
+        }
+        Node prev=current.getPrevious();
+        Node next=current.getNext();
+        if (prev!=null)
+            prev.setNext(next);
+        if (next!=null)
+            next.setPrevious(prev);
+        return current;
     }
 
     @Override
     public int indexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Node current=this.head;
+        int i=0;
+        while (current!=null && !current.getValue().equals(o)) {
+            current=current.getNext();
+            i++;
+        }
+        if (current==null) return -1;
+        else return i;
     }
 
     @Override
     public int lastIndexOf(Object o) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Node current=this.getTail();
+        int i=this.size()-1;
+        while (current!=null && !current.getValue().equals(o)){
+            current=current.getPrevious();
+            i--;
+        }
+        if (current==null) return -1;
+        else return i;
     }
 
     @Override
@@ -216,11 +241,39 @@ public class ChainList<T> implements List {
 
     @Override
     public List subList(int fromIndex, int toIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (fromIndex<0 || fromIndex>this.size()-1) return null;
+        if (toIndex<0 || toIndex>this.size()-1) return null;
+        if (fromIndex>toIndex) return null;
+        Node current=this.head;
+        ChainList ret=new ChainList();
+        for (int i=0;i<fromIndex-1;i++)
+            current=current.getNext();
+        
+        
+        for (int i=fromIndex;i<=toIndex;i++) {
+            ret.add(current.getValue());
+        }
+        return ret;
+
     }
 
-    private Node getTail() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Node getTail() {
+        Node current=this.head;
+        if (current==null) return null;
+        while (current.getNext()!=null)
+            current=current.getNext();
+        return current;
+    }
+
+    public void setHead(Node node) {
+        this.head=node;
+    }
+
+    private Node getNodeByElement(Object o) {
+        Node current=this.head;
+        while (current!=null && !current.getValue().equals(o))
+            current=current.getNext();
+        return current;
     }
 
     

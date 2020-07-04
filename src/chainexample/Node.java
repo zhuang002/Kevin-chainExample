@@ -9,7 +9,7 @@ package chainexample;
  *
  * @author zhuan
  */
-public class Node<T> {
+public class Node<T> implements Cloneable {
     private Node previous=null;
     private Node next=null;
     private T value;
@@ -60,5 +60,14 @@ public class Node<T> {
         node.next=this;
         p.next=node;
         node.previous=p;
+    }
+    
+    @Override
+    public Object clone() {
+        Node node=new Node();
+        node.setPrevious(previous);
+        node.setNext(next);
+        node.setValue(value);
+        return node;
     }
 }
